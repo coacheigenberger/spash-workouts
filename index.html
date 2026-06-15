@@ -3,129 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer Workout Attendance</title>
+    <title>Summer Workouts Attendance Tracker</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #3b82f6;
-            --success: #10b981;
-            --dark: #1f2937;
-            --light: #f3f4f6;
-        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
         .container {
-            max-width: 500px;
-            width: 100%;
             background: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        h1, h2 { text-align: center; color: var(--primary); margin-top: 0; }
-        label { font-weight: bold; display: block; margin-bottom: 8px; }
-        select, button {
+        h2 { text-align: center; color: #1e3a8a; margin-top: 0; }
+        label { font-weight: bold; display: block; margin: 15px 0 5px; color: #374151; }
+        select {
             width: 100%;
             padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
             font-size: 16px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            outline: none;
+            background-color: #fff;
         }
-        select { border: 2px solid #ccc; background-color: white; }
+        select:focus { border-color: #2563eb; }
         button {
-            background-color: var(--primary);
+            width: 100%;
+            background-color: #2563eb;
             color: white;
             border: none;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
+            margin-top: 20px;
             transition: background 0.2s;
         }
-        button:hover { background-color: var(--secondary); }
         button:disabled { background-color: #9ca3af; cursor: not-allowed; }
-        .success-box {
-            background-color: #d1fae5;
-            color: #065f46;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--success);
-            margin-top: 15px;
+        .loading {
             display: none;
-        }
-        .badges-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .badge {
-            background: #dee2e6;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+            text-align: center;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            color: #2563eb;
+            margin: 15px 0;
         }
-        .badge.earned {
-            background: #fef08a;
-            color: #854d0e;
-            border: 1px solid #ca8a04;
+        .success-box {
+            display: none;
+            background-color: #ecfdf5;
+            border: 2px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
         }
-        .stats {
-            background: #eff6ff;
+        .success-box h3 { color: #065f46; margin-top: 0; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: white;
             padding: 10px;
             border-radius: 6px;
-            margin-top: 10px;
-            font-size: 14px;
+            border: 1px solid #d1d5db;
+            text-align: center;
         }
-        #loading { text-align: center; font-weight: bold; color: var(--secondary); display: none; }
+        .stat-num { font-size: 24px; font-weight: bold; color: #1e3a8a; }
+        .badges-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .badge-card {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid #bfdbfe;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🏋️‍♂️ Summer Workouts</h1>
-    <h2>Attendance Cloud Check-In</h2>
+    <h2>☀️ Workout Tracker</h2>
     
-    <div id="loading">Connecting to cloud database...</div>
+    <label for="playerSelect">Select Your Name:</label>
+    <select id="playerSelect">
+        <option value="">-- Choose from Roster --</option>
+    </select>
 
-    <div id="formContent">
-        <label for="playerSelect">Select Your Name:</label>
-        <select id="playerSelect">
-            <option value="">-- Loading Roster... --</option>
-        </select>
-
-        <button id="checkInBtn" disabled>Check In Today</button>
-    </div>
+    <button id="checkInBtn">Check In Today</button>
+    <div id="loading" class="loading">⏳ Sending to Google Sheets...</div>
 
     <div id="successBox" class="success-box">
-        <h3>✅ Check-In Processed!</h3>
-        <p id="welcomeMessage"></p>
-        
-        <div class="stats">
-            <strong>Total Workouts:</strong> <span id="statTotal">0</span><br>
-            <strong>Total Points:</strong> <span id="statPoints">0</span> 🪙
+        <h3 id="welcomeMessage">Check-In Successful!</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Days Active</div>
+                <div id="statTotal" class="stat-num">-</div>
+            </div>
+            <div class="stat-card">
+                <div>Total Points</div>
+                <div id="statPoints" class="stat-num">-</div>
+            </div>
         </div>
-
-        <h4>Your Badges:</h4>
-        <div id="badgesContainer" class="badges-container"></div>
+        <strong>🏆 Earned Badges:</strong>
+        <div id="badgesContainer" class="badges-grid"></div>
     </div>
 </div>
 
 <script>
     // 1. Paste your Google Web App deployment URL between the quotes below:
-    const WEB_APP_URL = "YOUR_CURRENT_GOOGLE_WEB_APP_URL";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwTtxC6mvebrP-_5uuj_HlEDyYrQfdshTJrQQyekoxQsKv1inoO7zOdP_EWr2PBVR7mwA/exec";
 
-    // 2. Your player roster is hardcoded below so it loads instantly without crashing
+    // 2. Pre-loaded alphabetical roster
     const myRoster = [
         "ALTENBURG, FINLEY O.", "AMARO, AIDEN A.", "ANANIADIS, CHRISTOPHER G.", "ARMON, DAVID III", 
         "BANKS, DANIEL L. III", "BARTELT, OLIVER K.", "BARTELT, WESLEY E.", "BERNSTEIN, EMERY L.", 
@@ -182,7 +185,7 @@
     const loadingDiv = document.getElementById('loading');
     const successBox = document.getElementById('successBox');
 
-    // Build the dropdown instantly using your typed roster
+    // Build selection dropdown list instantly on load
     window.addEventListener('DOMContentLoaded', () => {
         playerSelect.innerHTML = '<option value="">-- Choose from Roster --</option>';
         myRoster.forEach(name => {
@@ -191,11 +194,8 @@
             opt.textContent = name;
             playerSelect.appendChild(opt);
         });
-        checkInBtn.disabled = false;
-        loadingDiv.style.display = 'none';
     });
 
-    // Submitting handler with anti-duplicate lock
     let isSubmitting = false;
 
     checkInBtn.addEventListener('click', () => {
@@ -212,36 +212,56 @@
         checkInBtn.disabled = true;
         checkInBtn.innerText = "Processing Check-In...";
 
+        // Send submission to web app via text formatting to bypass CORS restrictions
         fetch(WEB_APP_URL, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ playerName: playerName })
         })
-        .then(() => {
-            setTimeout(() => {
-                loadingDiv.style.display = 'none';
-                checkInBtn.disabled = false;
-                checkInBtn.innerText = "Check In Today";
-                isSubmitting = false; 
+        .then(response => response.json())
+        .then(res => {
+            loadingDiv.style.display = 'none';
+            checkInBtn.disabled = false;
+            checkInBtn.innerText = "Check In Today";
+            isSubmitting = false; 
+
+            if (res.success || res.msg === "Duplicate dropped safely") {
+                document.getElementById('welcomeMessage').innerText = `Awesome job, ${playerName}! Your workout has been recorded.`;
                 
-                document.getElementById('welcomeMessage').innerText = `Awesome job, ${playerName}! Your submission was sent to Coach's Google Sheet.`;
-                document.getElementById('statTotal').innerText = "-";
-                document.getElementById('statPoints').innerText = "-";
-                document.getElementById('badgesContainer').innerHTML = "<p style='font-size:12px; color:#666;'>Logins record live to the sheet! To see your exact badges, check the master dashboard.</p>";
+                // Show values returned by the script
+                document.getElementById('statTotal').innerText = res.totalSignIns || "1";
+                document.getElementById('statPoints').innerText = res.points || "1";
+                
+                const container = document.getElementById('badgesContainer');
+                container.innerHTML = "";
+                
+                if (res.badges && res.badges.length > 0) {
+                    res.badges.forEach(badge => {
+                        let bDiv = document.createElement('div');
+                        bDiv.className = 'badge-card';
+                        bDiv.innerHTML = `<strong>🏅 ${badge}</strong>`;
+                        container.appendChild(bDiv);
+                    });
+                } else {
+                    container.innerHTML = "<p style='color:#666;'>Keep showing up to unlock milestones!</p>";
+                }
+                
                 successBox.style.display = 'block';
                 window.scrollTo({ top: successBox.offsetTop, behavior: 'smooth' });
-            }, 4000); 
+            } else {
+                alert("Database Error: " + res.error);
+            }
         })
         .catch(err => {
             loadingDiv.style.display = 'none';
             checkInBtn.disabled = false;
             checkInBtn.innerText = "Check In Today";
             isSubmitting = false;
-            alert("Network error. Please try again.");
+            alert("Handshake error. Make sure your Google Script deployment is set to 'Anyone'.");
             console.error(err);
         });
     });
 </script>
+
 </body>
 </html>

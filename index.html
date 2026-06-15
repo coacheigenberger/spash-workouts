@@ -122,38 +122,80 @@
 </div>
 
 <script>
-    // Paste your Google Web App deployment URL between the quotes below:
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwTtxC6mvebrP-_5uuj_HlEDyYrQfdshTJrQQyekoxQsKv1inoO7zOdP_EWr2PBVR7mwA/exec";
+    // 1. Paste your Google Web App deployment URL between the quotes below:
+    const WEB_APP_URL = "YOUR_CURRENT_GOOGLE_WEB_APP_URL";
+
+    // 2. Your player roster is hardcoded below so it loads instantly without crashing
+    const myRoster = [
+        "ALTENBURG, FINLEY O.", "AMARO, AIDEN A.", "ANANIADIS, CHRISTOPHER G.", "ARMON, DAVID III", 
+        "BANKS, DANIEL L. III", "BARTELT, OLIVER K.", "BARTELT, WESLEY E.", "BERNSTEIN, EMERY L.", 
+        "BEVERSDORF, FRITZ", "BOGGS, HARRISON A.", "BORJAS-GONZALEZ, CESAR O.", "BOURESSA, JACKSON C.", 
+        "BOURESSA, WILLIAM J.", "BREITBACH, TRENT G.", "BRENEMAN, DYLAN J.", "BRENEMAN, THEO", 
+        "BREWER, LOGAN A.", "BROWN, GREGG P.", "BUSHMAN, QUINN", "CAFFERTY, JARRON M.", 
+        "CASTLEBERG, OLIVER C.", "CHANDONAIS, TRENT G.", "CHEREK, LILLIAN L.", "CHITWOOD, JACKSON F.", 
+        "CHRISTOPHEL, EVAN", "CHRISTOPHERSON, JAKE W.", "CISEWSKI, LOGAN J.", "CIULLA, ETHAN", 
+        "CIULLA, JACOB", "CORDY, DIESEL S.", "CORDY, JOHNATHAN", "CYCHOSZ, KARSTEN L.", 
+        "DEERING, AIDEN", "DEMROW, LUCAS", "DERNBACH, DAYNE", "DIEKHUS, BENJAMIN H.", 
+        "DIEKHUS, CALLIE E.", "DORSHORST, ELIJAH L.", "DUDA, JOSLYN", "DUELLMAN, CALEB W.", 
+        "EHLINGER, LUKE T.", "EHLINGER, ZACHERY O.", "EICHENBERG, LUKE D.", "FAHRNER, JETT M.", 
+        "FEDERWITZ, OTTO J.", "FELTZ, GRANT W.", "FILUT, JACOB C.", "FIRKUS, WILLIAM A.", 
+        "FLIES, MASON J.", "FROST, ROHAN", "GALLOWAY, JAXON", "GAWLIK, TRENTON J.", 
+        "GILLES, KEENAN", "GILLES, KELSON", "GLODOWSKI, JOSEPH J.", "GORSKI, JACOB", 
+        "GORSKI, WILLIAM", "GOTTLIEB, ELIJAH G.", "GOTTLIEB, GABRIEL M.", "GRANT, ANDREW W.", 
+        "HAMILTON, BENJAMIN G.", "HAMILTON, JACOB R.", "HAMILTON, PHILLIP C. IV", "HANLON, ALEXANDER J.", 
+        "HARDIN, JOHN JR", "HENDERSON, LOGAN A.", "HEREK-WRIGHT, MASON P.", "HOCKETT, BRAXTON M.", 
+        "HOJNACKI, TYSON J.", "HOPFENSPERGER, JACE E.", "HOPFENSPERGER, JAXON D.", "HOPFENSPERGER, JORDY R.", 
+        "HORN, MYA L.", "IDHEN, KYMANI", "IDHEN, TAHIRY", "INGMAN, JACK", 
+        "JANDRAIN, CONNOR C.", "JANKOWSKI, BRAEDEN M.", "JENSEN, COLTON K.", "JESCH, LEVI", 
+        "JOHNSON, JILLIAN R.", "JOHNSON, TITUS L.", "KAHLE, BRADY J.", "KARALIUNAS, EASTON N.", 
+        "KARALIUNAS, KACE W.", "KARALIUNAS, PEYTON P.", "KARPINSKI, LEVI A.", "KECK, DEAN", 
+        "KELLERMAN, BRENNAN M.", "KING, BRAYDEN J.", "KING, MASON V.", "KING, TREVOR A.", 
+        "KING, TYLER C.", "KINSLOW, CARTER D.", "KIRKING, EMERIK", "KIRSCHBAUM, BECK", 
+        "KIRSCHBAUM, BLAKE B.", "KLAIPS, ELI", "KLEIN, JESSE", "KOCKEN, MALEAH R.", 
+        "KORNOWSKI, SAMUEL J.", "KRAEMER, EMMETT J.", "KRIHAK, CHARLES V.", "KRUZITSKI, EVAN", 
+        "LAKE, BRAXTON", "LAMON, HUNTER", "LEPAK, PAIGE E.", "LEPINSKI, LEVI", 
+        "LEWANDOWSKI, JAKE M.", "LIPKE, ISAAC R.", "LOCKMAN, BRENNA S.", "LOCKMAN, COLLIN B.", 
+        "LOR, YENG KONG", "MAAS, ADDISEN R.", "MAAS, DRAYDEN D.", "MANCL, OWEN", 
+        "MANSAVAGE, BENNETT", "MANUEL, KYRON", "MCDOWELL, NATHAN P.", "MCINTOSH, HENRY", 
+        "MCQUILLEN, TRENTON J.", "MEDELLIN, XAVIER", "MELENDEZ, EMILIANO", "MELVILLE, CLAYTON G.", 
+        "MERRIWEATHER, KHALANI J.", "MLSNA, WILLIAM J.", "MOUANOUTOUA, AIDEN L.", "MROZEK, MARSHALL E.", 
+        "MROZEK, PARKER J.", "MYLENER, CHARLIE A.", "ORLOWSKI, PEYTON N.", "OSTROWSKI, SAWYER G.", 
+        "OSWALL, JACK M.", "OSWALL, THOMAS C.", "PAHMEIER, KEKOA M.", "PALMER, WYATT J.", 
+        "PATOKA, CALEB J.", "PATOKA, MASON J.", "PEETERS, AIDEN", "PENNER, JACKSON", 
+        "PESTKA, DAMON M.", "PHILHOWER, MASON", "PHILLIP, COOPER S.", "PHILLIPS, BRAYDEN W.", 
+        "PIECZYNSKI, PIPER K.", "PUENTE, JESUS U.", "RACZEK, ANTHONY R.", "RAY, HUNTER G.", 
+        "REHFELDT, CHASE E.", "RICHARDSON, REINER L.", "ROGERS, ELIAS K.", "ROHDE, BENJAMIN", 
+        "ROSENAU, MATTHEW N.", "ROTH, HENRY", "ROTH, MARSHALL D.", "ROUSE, EVAN M.", 
+        "SAARI, MARLEY D.", "SANKEY, AEDIN K.", "SCHEMENAUER, JACE R.", "SCHMIES, LIAM", 
+        "SHIREK, CORA L.", "SIMONS, MARSHALL D.", "SKRENES, FRANKLIN", "SMITH, GRADY", 
+        "SORTERS, DAMEON X.", "SOWIEJA, CARTER", "SPIRKO, SAMPSON B.", "SPRECHER, JACK", 
+        "SPRECHER, MILES", "STAEGE, JACKSON P.", "STEVENS, LEYTON M.", "SZALKUCKI, NICHOLAS J.", 
+        "TRITT, GREYSON T.", "TRZEBIATOWSKI, BROOKLYNN M.", "TRZEBIATOWSKI, CLAIRE E.", "TRZEBIATOWSKI, DANIEL J.", 
+        "TRZEBIATOWSKI, JACOB A.", "VOGEL, OLIVER L.", "WANTA, KADE A.", "WANTA, KAMDEN J.", 
+        "WARZYNSKI, GAGE M.", "WEISS, JOHNATHAN W.", "WILLSON, LUCAS J.", "WIMME, ZAC", 
+        "WIZA, OLIVIA M.", "WOOD, JAXON J.", "WORZALLA, JAMES M.", "YANG, ETHAN", 
+        "YANG, ISAAC D.", "ZANOW, BENNETT"
+    ];
 
     const playerSelect = document.getElementById('playerSelect');
     const checkInBtn = document.getElementById('checkInBtn');
     const loadingDiv = document.getElementById('loading');
     const successBox = document.getElementById('successBox');
 
-    // Fetch roster from Google Sheet instantly on page load
+    // Build the dropdown instantly using your typed roster
     window.addEventListener('DOMContentLoaded', () => {
-        showLoading(true);
-        fetch(WEB_APP_URL)
-            .then(response => response.json())
-            .then(data => {
-                playerSelect.innerHTML = '<option value="">-- Choose from Roster --</option>';
-                data.roster.forEach(name => {
-                    let opt = document.createElement('option');
-                    opt.value = name;
-                    opt.textContent = name;
-                    playerSelect.appendChild(opt);
-                });
-                checkInBtn.disabled = false;
-                showLoading(false);
-            })
-            .catch(err => {
-                alert("Error loading roster from cloud. Make sure your Web App URL is correct.");
-                console.error(err);
-                showLoading(false);
-            });
+        playerSelect.innerHTML = '<option value="">-- Choose from Roster --</option>';
+        myRoster.forEach(name => {
+            let opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            playerSelect.appendChild(opt);
+        });
+        checkInBtn.disabled = false;
+        loadingDiv.style.display = 'none';
     });
 
-// TRACKER VARIABLE TO PREVENT DOUBLE SUBMISSIONS
+    // Submitting handler with anti-duplicate lock
     let isSubmitting = false;
 
     checkInBtn.addEventListener('click', () => {
@@ -163,41 +205,36 @@
             return;
         }
 
-        // IF ALREADY SUBMITTING, BLOCK ANY LATER DUPES
         if (isSubmitting) return; 
         
-        // LOCK THE SYSTEM IMMEDIATELY
         isSubmitting = true;
-        showLoading(true);
+        loadingDiv.style.display = 'block';
         checkInBtn.disabled = true;
         checkInBtn.innerText = "Processing Check-In...";
 
-        // Send submission to Google Sheet via POST request
         fetch(WEB_APP_URL, {
             method: 'POST',
-            mode: 'no-cors', // Essential for basic redirection
+            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ playerName: playerName })
         })
         .then(() => {
-            // Keep button locked for 4 seconds to let Google process and block internal browser retries
             setTimeout(() => {
-                showLoading(false);
+                loadingDiv.style.display = 'none';
                 checkInBtn.disabled = false;
                 checkInBtn.innerText = "Check In Today";
-                isSubmitting = false; // Unlock for next person/day
+                isSubmitting = false; 
                 
-                // Show clean confirmation screen
                 document.getElementById('welcomeMessage').innerText = `Awesome job, ${playerName}! Your submission was sent to Coach's Google Sheet.`;
                 document.getElementById('statTotal').innerText = "-";
                 document.getElementById('statPoints').innerText = "-";
-                document.getElementById('badgesContainer').innerHTML = "<p style='font-size:12px; color:#666;'>Logins from custom phones instantly record live to the sheet! To safely see your exact badges, check the master dashboard.</p>";
+                document.getElementById('badgesContainer').innerHTML = "<p style='font-size:12px; color:#666;'>Logins record live to the sheet! To see your exact badges, check the master dashboard.</p>";
                 successBox.style.display = 'block';
                 window.scrollTo({ top: successBox.offsetTop, behavior: 'smooth' });
             }, 4000); 
         })
         .catch(err => {
-            showLoading(false);
+            loadingDiv.style.display = 'none';
             checkInBtn.disabled = false;
             checkInBtn.innerText = "Check In Today";
             isSubmitting = false;
@@ -205,87 +242,6 @@
             console.error(err);
         });
     });
-
-        showLoading(true);
-        checkInBtn.disabled = true;
-
-        // Send submission to Google Sheet via POST request
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Essential for handling cross-origin redirect restrictions with Apps Script
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ playerName: playerName })
-        })
-        .then(() => {
-            // Because 'no-cors' mode hide response data, we do a quick second fetch to securely pull stats
-            return fetch(WEB_APP_URL);
-        })
-        .then(() => {
-            // Re-fetch calculations to show updated badges instantly
-            // We simulate the calculation request safely or parse global historical context
-            // To ensure 100% precision with no-cors limitations, the UI requests its profile update card:
-            return fetch(WEB_APP_URL + "?refresh=true");
-        })
-        .then(res => res.json())
-        .then(() => {
-            // Deep evaluation call to read current status rows matching name
-            return fetch(WEB_APP_URL, {
-                method: 'POST',
-                body: JSON.stringify({ playerName: playerName })
-            });
-        })
-        .then(res => res.json())
-        .then(result => {
-            showLoading(false);
-            checkInBtn.disabled = false;
-            if(result.success) {
-                showSuccessPanel(playerName, result);
-            } else {
-                alert("Database error: " + result.error);
-            }
-        })
-        .catch(err => {
-            // Fallback: If strict browser security blocks the recursive cross-origin read,
-            // remind kids their sign-in successfully updated in the sheet row.
-            showLoading(false);
-            checkInBtn.disabled = false;
-            document.getElementById('welcomeMessage').innerText = `Awesome job, ${playerName}! Your submission was sent to Coach's Google Sheet.`;
-            document.getElementById('statTotal').innerText = "-";
-            document.getElementById('statPoints').innerText = "-";
-            document.getElementById('badgesContainer').innerHTML = "<p style='font-size:12px; color:#666;'>Logins from custom phones instantly record live to the sheet! To safely see your exact badges, check the master dashboard.</p>";
-            successBox.style.display = 'block';
-        });
-    });
-
-    function showLoading(isLoading) {
-        loadingDiv.style.display = isLoading ? 'block' : 'none';
-    }
-
-    function showSuccessPanel(name, data) {
-        document.getElementById('welcomeMessage').innerText = `Great workout, ${name}! Thanks for checking in.`;
-        document.getElementById('statTotal').innerText = data.totalSignIns;
-        document.getElementById('statPoints').innerText = data.points;
-
-        const badgesDiv = document.getElementById('badgesContainer');
-        badgesDiv.innerHTML = '';
-        
-        const baseBadges = ['First Timer', 'Early Bird', 'Comeback Kid'];
-        for(let i=4; i<=32; i+=4) { baseBadges.push(`${i} Day Streak`); }
-        for(let i=10; i<=50; i+=10) { baseBadges.push(`${i} Day Club`); }
-
-        baseBadges.forEach(badge => {
-            const hasIt = data.badges.includes(badge);
-            if (hasIt || badge.includes('4 Day') || badge.includes('10 Day') || baseBadges.indexOf(badge) < 3) {
-                const badgeEl = document.createElement('div');
-                badgeEl.className = `badge ${hasIt ? 'earned' : ''}`;
-                badgeEl.innerHTML = `${hasIt ? '⭐' : '🔒'} ${badge}`;
-                badgesDiv.appendChild(badgeEl);
-            }
-        });
-
-        successBox.style.display = 'block';
-        window.scrollTo({ top: successBox.offsetTop, behavior: 'smooth' });
-    }
 </script>
 </body>
 </html>

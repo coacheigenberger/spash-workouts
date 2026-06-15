@@ -209,7 +209,7 @@
 
 <script>
     // 1. Paste your Google Web App deployment URL between the quotes below:
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwTtxC6mvebrP-_5uuj_HlEDyYrQfdshTJrQQyekoxQsKv1inoO7zOdP_EWr2PBVR7mwA/exec";
+    const WEB_APP_URL = "YOUR_CURRENT_GOOGLE_WEB_APP_URL";
 
     // 2. Pre-loaded alphabetical roster
     const myRoster = [
@@ -234,4 +234,117 @@
         "HORN, MYA L.", "IDHEN, KYMANI", "IDHEN, TAHIRY", "INGMAN, JACK", 
         "JANDRAIN, CONNOR C.", "JANKOWSKI, BRAEDEN M.", "JENSEN, COLTON K.", "JESCH, LEVI", 
         "JOHNSON, JILLIAN R.", "JOHNSON, TITUS L.", "KAHLE, BRADY J.", "KARALIUNAS, EASTON N.", 
-        "KARALIUNAS, KACE W.",
+        "KARALIUNAS, KACE W.", "KARALIUNAS, PEYTON P.", "KARPINSKI, LEVI A.", "KECK, DEAN", 
+        "KELLERMAN, BRENNAN M.", "KING, BRAYDEN J.", "KING, MASON V.", "KING, TREVOR A.", 
+        "KING, TYLER C.", "KINSLOW, CARTER D.", "KIRKING, EMERIK", "KIRSCHBAUM, BECK", 
+        "KIRSCHBAUM, BLAKE B.", "KLAIPS, ELI", "KLEIN, JESSE", "KOCKEN, MALEAH R.", 
+        "KORNOWSKI, SAMUEL J.", "KRAEMER, EMMETT J.", "KRIHAK, CHARLES V.", "KRUZITSKI, EVAN", 
+        "LAKE, BRAXTON", "LAMON, HUNTER", "LEPAK, PAIGE E.", "LEPINSKI, LEVI", 
+        "LEWANDOWSKI, JAKE M.", "LIPKE, ISAAC R.", "LOCKMAN, BRENNA S.", "LOCKMAN, COLLIN B.", 
+        "LOR, YENG KONG", "MAAS, ADDISEN R.", "MAAS, DRAYDEN D.", "MANCL, OWEN", 
+        "MANSAVAGE, BENNETT", "MANUEL, KYRON", "MCDOWELL, NATHAN P.", "MCINTOSH, HENRY", 
+        "MCQUILLEN, TRENTON J.", "MEDELLIN, XAVIER", "MELENDEZ, EMILIANO", "MELVILLE, CLAYTON G.", 
+        "MERRIWEATHER, KHALANI J.", "MLSNA, WILLIAM J.", "MOUANOUTOUA, AIDEN L.", "MROZEK, MARSHALL E.", 
+        "MROZEK, PARKER J.", "MYLENER, CHARLIE A.", "ORLOWSKI, PEYTON N.", "OSTROWSKI, SAWYER G.", 
+        "OSWALL, JACK M.", "OSWALL, THOMAS C.", "PAHMEIER, KEKOA M.", "PALMER, WYATT J.", 
+        "PATOKA, CALEB J.", "PATOKA, MASON J.", "PEETERS, AIDEN", "PENNER, JACKSON", 
+        "PESTKA, DAMON M.", "PHILHOWER, MASON", "PHILLIP, COOPER S.", "PHILLIPS, BRAYDEN W.", 
+        "PIECZYNSKI, PIPER K.", "PUENTE, JESUS U.", "RACZEK, ANTHONY R.", "RAY, HUNTER G.", 
+        "REHFELDT, CHASE E.", "RICHARDSON, REINER L.", "ROGERS, ELIAS K.", "ROHDE, BENJAMIN", 
+        "ROSENAU, MATTHEW N.", "ROTH, HENRY", "ROTH, MARSHALL D.", "ROUSE, EVAN M.", 
+        "SAARI, MARLEY D.", "SANKEY, AEDIN K.", "SCHEMENAUER, JACE R.", "SCHMIES, LIAM", 
+        "SHIREK, CORA L.", "SIMONS, MARSHALL D.", "SKRENES, FRANKLIN", "SMITH, GRADY", 
+        "SORTERS, DAMEON X.", "SOWIEJA, CARTER", "SPIRKO, SAMPSON B.", "SPRECHER, JACK", 
+        "SPRECHER, MILES", "STAEGE, JACKSON P.", "STEVENS, LEYTON M.", "SZALKUCKI, NICHOLAS J.", 
+        "TRITT, GREYSON T.", "TRZEBIATOWSKI, BROOKLYNN M.", "TRZEBIATOWSKI, CLAIRE E.", "TRZEBIATOWSKI, DANIEL J.", 
+        "TRZEBIATOWSKI, JACOB A.", "VOGEL, OLIVER L.", "WANTA, KADE A.", "WANTA, KAMDEN J.", 
+        "WARZYNSKI, GAGE M.", "WEISS, JOHNATHAN W.", "WILLSON, LUCAS J.", "WIMME, ZAC", 
+        "WIZA, OLIVIA M.", "WOOD, JAXON J.", "WORZALLA, JAMES M.", "YANG, ETHAN", 
+        "YANG, ISAAC D.", "ZANOW, BENNETT"
+    ];
+
+    const playerSelect = document.getElementById('playerSelect');
+    const checkInBtn = document.getElementById('checkInBtn');
+    const loadingDiv = document.getElementById('loading');
+    const successBox = document.getElementById('successBox');
+
+    window.addEventListener('DOMContentLoaded', () => {
+        playerSelect.innerHTML = '<option value="">-- Choose from Roster --</option>';
+        myRoster.forEach(name => {
+            let opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            playerSelect.appendChild(opt);
+        });
+    });
+
+    let isSubmitting = false;
+
+    checkInBtn.addEventListener('click', () => {
+        const playerName = playerSelect.value;
+        if (!playerName) {
+            alert('Please select your name!');
+            return;
+        }
+
+        if (isSubmitting) return; 
+        
+        isSubmitting = true;
+        loadingDiv.style.display = 'block';
+        checkInBtn.disabled = true;
+        checkInBtn.style.backgroundColor = "#3f3f46";
+        checkInBtn.innerText = "Processing Check-In...";
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ playerName: playerName })
+        })
+        .then(response => response.json())
+        .then(res => {
+            loadingDiv.style.display = 'none';
+            checkInBtn.disabled = false;
+            checkInBtn.style.backgroundColor = "#7f1d1d";
+            checkInBtn.innerText = "Check In Today";
+            isSubmitting = false; 
+
+            if (res.success || res.msg === "Duplicate dropped safely") {
+                document.getElementById('welcomeMessage').innerText = `Check-In Success!`;
+                
+                document.getElementById('statTotal').innerText = res.totalSignIns || "1";
+                document.getElementById('statPoints').innerText = res.points || "1";
+                
+                const container = document.getElementById('badgesContainer');
+                container.innerHTML = "";
+                
+                if (res.badges && res.badges.length > 0) {
+                    res.badges.forEach(badge => {
+                        let bDiv = document.createElement('div');
+                        bDiv.className = 'badge-card';
+                        bDiv.innerHTML = `<span>🏅 &nbsp; ${badge}</span>`;
+                        container.appendChild(bDiv);
+                    });
+                } else {
+                    container.innerHTML = "<p style='color:#a1a1aa; font-size:13px; text-align:center;'>Keep checking in to unlock milestones!</p>";
+                }
+                
+                successBox.style.display = 'block';
+                window.scrollTo({ top: successBox.offsetTop, behavior: 'smooth' });
+            } else {
+                alert("Database Error: " + res.error);
+            }
+        })
+        .catch(err => {
+            loadingDiv.style.display = 'none';
+            checkInBtn.disabled = false;
+            checkInBtn.style.backgroundColor = "#7f1d1d";
+            checkInBtn.innerText = "Check In Today";
+            isSubmitting = false;
+            alert("Connection error. Make sure your Google Script deployment is set to 'Anyone'.");
+            console.error(err);
+        });
+    });
+</script>
+
+</body>
+</html>

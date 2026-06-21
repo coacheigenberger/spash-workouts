@@ -326,22 +326,27 @@
         bDiv.style.marginBottom = "8px";
 
         // Choose custom background styles or icons depending on the badge type
-        if (badge.includes("Early Bird")) {
-            bDiv.style.background = "linear-gradient(135deg, #7c2d12, #450a0a)";
-            bDiv.style.borderColor = "#ea580c";
-            bDiv.innerHTML = `<span style="font-size: 18px;">🌅</span> <div style="margin-left:12px; text-align:left;"><strong>Early Bird Award</strong><br><span style="font-size:11px; color:#ffedd5;">First to hit the grind today!</span></div>`;
-        } 
-        else if (badge.includes("Streak")) {
-            bDiv.style.background = "linear-gradient(135deg, #450a0a, #1e1b4b)";
-            bDiv.style.borderColor = "#f43f5e";
-            bDiv.innerHTML = `<span style="font-size: 18px;">🔥</span> <div style="margin-left:12px; text-align:left;"><strong>${badge.split(" (")[0]}</strong><br><span style="font-size:11px; color:#ffe4e6;">Consecutive training streak!</span></div>`;
-        } 
-        else {
-            // Default milestone layout matching your stealth mockup theme
-            bDiv.style.background = "#450a0a";
-            bDiv.style.borderColor = "#991b1b";
-            bDiv.innerHTML = `<span style="font-size: 18px;">🏆</span> <div style="margin-left:12px; text-align:left;"><strong>Milestone Unlocked</strong><br><span style="font-size:11px; color:#fca5a5;">${badge}</span></div>`;
-        }
+       if (badge.includes("Early Bird")) {
+               bDiv.style.background = "linear-gradient(135deg, #7c2d12, #450a0a)";
+               bDiv.style.borderColor = "#ea580c";
+               bDiv.innerHTML = `<span style="font-size: 18px;">🌅</span> <div style="margin-left:12px; text-align:left;"><strong>Early Bird Award</strong><br><span style="font-size:11px; color:#ffedd5;">First to hit the grind today!</span></div>`;
+           } 
+           else if (badge.includes("Streak")) {
+               bDiv.style.background = "linear-gradient(135deg, #450a0a, #1e1b4b)";
+               bDiv.style.borderColor = "#f43f5e";
+               bDiv.innerHTML = `<span style="font-size: 18px;">🔥</span> <div style="margin-left:12px; text-align:left;"><strong>${badge.split(" (")[0]}</strong><br><span style="font-size:11px; color:#ffe4e6;">Consecutive training streak!</span></div>`;
+           } 
+           else if (badge.includes("Daily Deposit")) {
+               // Sharp, athletic dark slate theme for regular daily work
+               bDiv.style.background = "linear-gradient(135deg, #1e2025, #27272a)";
+               bDiv.style.borderColor = "#52525b";
+               bDiv.innerHTML = `<span style="font-size: 18px;">💪</span> <div style="margin-left:12px; text-align:left;"><strong>Daily Deposit</strong><br><span style="font-size:11px; color:#d4d4d8;">Putting work in the bank. +2 Total Points!</span></div>`;
+           }
+           else {
+               bDiv.style.background = "#450a0a";
+               bDiv.style.borderColor = "#991b1b";
+               bDiv.innerHTML = `<span style="font-size: 18px;">🏆</span> <div style="margin-left:12px; text-align:left;"><strong>Milestone Unlocked</strong><br><span style="font-size:11px; color:#fca5a5;">${badge}</span></div>`;
+           }
 
         container.appendChild(bDiv);
     });
